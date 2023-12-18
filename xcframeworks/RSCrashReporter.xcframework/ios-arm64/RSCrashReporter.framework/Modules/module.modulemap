@@ -1,6 +1,0 @@
-framework module RSCrashReporter {
-  umbrella header "RSCrashReporter-iOS12.0-umbrella.h"
-
-  export *
-  module * { export * }
-}
