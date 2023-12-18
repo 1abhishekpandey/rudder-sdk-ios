@@ -98,7 +98,7 @@ xcodebuild -create-xcframework \
 # find . -type f -exec shasum -a 256 {} \; > xcframework.sha256
 
 # gh release upload v1.2.4 xcframeworks.zip
-gh release upload v1.2.4 xcframeworks.zip.sha256
+# gh release upload v1.2.4 xcframeworks.zip.sha256
 
 # gh release upload v1.0.0 xcframeworks.zip
 # gh release create v1.2.3 xcframeworks.zip

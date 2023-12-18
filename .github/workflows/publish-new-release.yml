@@ -39,18 +39,18 @@ jobs:
       #     git config user.name "GitHub actions"
       #     git config user.email noreply@github.com
 
-      - name: Install xcpretty
-        run: gem install xcpretty
+      # - name: Install xcpretty
+      #   run: gem install xcpretty
 
-      - name: Install Cocoapods
-        run: gem install cocoapods
+      # - name: Install Cocoapods
+      #   run: gem install cocoapods
 
-      - name: Pod install
-        run: pod install --repo-update
+      # - name: Pod install
+      #   run: pod install --repo-update
 
-      - name: Generate XCFramework
-        run: |
-          sh ./generate-xcframework.sh
+      # - name: Generate XCFramework
+      #   run: |
+      #     sh ./generate-xcframework.sh
 
       # - name: Create Github Release
       #   id: create_release
@@ -71,6 +71,8 @@ jobs:
           shasum -a 256 xcframeworks.zip >xcframeworks.zip.sha256
           gh release upload v1.2.5 xcframeworks.zip
           gh release upload v1.2.5 xcframeworks.zip.sha256
+        env:
+          GH_TOKEN: ${{ github.token }}
 
   # - name: Create pull request into develop
   #   uses: repo-sync/pull-request@v2

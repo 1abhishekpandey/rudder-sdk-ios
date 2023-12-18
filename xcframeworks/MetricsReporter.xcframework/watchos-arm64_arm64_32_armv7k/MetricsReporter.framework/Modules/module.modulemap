@@ -1,0 +1,11 @@
+framework module MetricsReporter {
+  umbrella header "MetricsReporter-watchOS7.0-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module MetricsReporter.Swift {
+  header "MetricsReporter-Swift.h"
+  requires objc
+}
