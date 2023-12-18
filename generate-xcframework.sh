@@ -90,3 +90,5 @@ xcodebuild -create-xcframework \
     -archive archives/Rudder-tvOS.xcarchive -framework MetricsReporter.framework \
     -archive archives/Rudder-tvOS-simulator.xcarchive -framework MetricsReporter.framework \
     -output xcframeworks/MetricsReporter.xcframework
+
+zip xcframeworks.zip xcframeworks

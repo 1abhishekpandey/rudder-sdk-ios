@@ -11,7 +11,7 @@ on:
 jobs:
   release:
     name: Publish new release
-    runs-on: macos-latest-xl
+    runs-on: macos-latest
     # if: (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix-release/')) && github.event.pull_request.merged == true # only merged pull requests must trigger this job
     steps:
       # - name: Extract version from branch name (for release branches)
@@ -51,6 +51,11 @@ jobs:
       - name: Generate XCFramework
         run: |
           sh ./generate-xcframework.sh
+
+      - name: Upload Release Artifact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload 1.0.1 ./artifact/some-build-artifact.zip
 
       # - name: Create Github Release
       #   id: create_release
