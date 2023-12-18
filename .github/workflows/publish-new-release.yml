@@ -52,49 +52,59 @@ jobs:
       #   run: |
       #     sh ./generate-xcframework.sh
 
-      - uses: google-github-actions/release-please-action@v4
-        id: release
-        with:
-          release-type: node
-          skip-github-pull-request: true
+      # - uses: google-github-actions/release-please-action@v4
+      #   id: release
+      #   with:
+      #     release-type: node
+      #     skip-github-pull-request: true
 
-      - name: Upload Release Artifact
-        if: ${{ steps.release.outputs.release_created }}
+      # - name: Upload Release Artifact
+      #   if: ${{ steps.release.outputs.release_created }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: gh release upload 1.0.1 xcframeworks.zip
+
+      - name: Install Dependencies
+        run: npm install -g gh-release-cli
+
+      - name: Upload Asset to Release
+        run: |
+          gh release upload ${{ github.repository_owner }}/${{ github.repository_name }}@$GITHUB_REF \
+            xcframeworks.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload 1.0.1 xcframeworks.zip
 
-      # - name: Create Github Release
-      #   id: create_release
-      #   env:
-      #     HUSKY: 0
-      #     GITHUB_TOKEN: ${{ secrets.PAT }}
-      #     CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.PAT }}
-      #   run: |
-      #     DEBUG=conventional-github-releaser npx conventional-github-releaser -p angular --config github-release.config.js
+  # - name: Create Github Release
+  #   id: create_release
+  #   env:
+  #     HUSKY: 0
+  #     GITHUB_TOKEN: ${{ secrets.PAT }}
+  #     CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.PAT }}
+  #   run: |
+  #     DEBUG=conventional-github-releaser npx conventional-github-releaser -p angular --config github-release.config.js
 
-      # - name: Create pull request into develop
-      #   uses: repo-sync/pull-request@v2
-      #   with:
-      #     source_branch: "master"
-      #     destination_branch: "develop"
-      #     github_token: ${{ secrets.PAT }}
-      #     pr_title: "chore(release): pulling master into develop post release v${{ steps.extract-version.outputs.release_version }}"
-      #     pr_body: ":crown: *An automated PR*"
-      #     pr_reviewer: "pallabmaiti"
+  # - name: Create pull request into develop
+  #   uses: repo-sync/pull-request@v2
+  #   with:
+  #     source_branch: "master"
+  #     destination_branch: "develop"
+  #     github_token: ${{ secrets.PAT }}
+  #     pr_title: "chore(release): pulling master into develop post release v${{ steps.extract-version.outputs.release_version }}"
+  #     pr_body: ":crown: *An automated PR*"
+  #     pr_reviewer: "pallabmaiti"
 
-      # - name: Delete hotfix release branch
-      #   uses: koj-co/delete-merged-action@master
-      #   if: startsWith(github.event.pull_request.head.ref, 'hotfix-release/')
-      #   with:
-      #     branches: "hotfix-release/*"
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # - name: Delete hotfix release branch
+  #   uses: koj-co/delete-merged-action@master
+  #   if: startsWith(github.event.pull_request.head.ref, 'hotfix-release/')
+  #   with:
+  #     branches: "hotfix-release/*"
+  #   env:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Delete release branch
-      #   uses: koj-co/delete-merged-action@master
-      #   if: startsWith(github.event.pull_request.head.ref, 'release/')
-      #   with:
-      #     branches: "release/*"
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # - name: Delete release branch
+  #   uses: koj-co/delete-merged-action@master
+  #   if: startsWith(github.event.pull_request.head.ref, 'release/')
+  #   with:
+  #     branches: "release/*"
+  #   env:
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
