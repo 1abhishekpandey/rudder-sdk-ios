@@ -79,3 +79,6 @@ compile_commands.json
 GoogleService-Info.plist
 RudderConfig.plist
 configuration.json
+
+archives/
+xcframeworks/
