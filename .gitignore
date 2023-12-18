@@ -81,3 +81,4 @@ RudderConfig.plist
 configuration.json
 
 archives/
+# xcframeworks/
