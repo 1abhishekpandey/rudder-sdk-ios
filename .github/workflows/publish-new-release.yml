@@ -41,7 +41,7 @@ jobs:
 
       - name: Generate XCFramework
         run: |
-          sh ./scripts/generate-xcframework.sh
+          sh ./generate-xcframework.sh
 
       # - name: Create Github Release
       #   id: create_release
