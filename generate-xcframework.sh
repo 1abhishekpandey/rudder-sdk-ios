@@ -1,4 +1,9 @@
 # !/bin/bash -e
+
+gem install xcpretty
+gem install cocoapods
+pod install --repo-update
+
 rm -rf archives/
 rm -rf xcframeworks
 
