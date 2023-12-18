@@ -93,7 +93,7 @@ xcodebuild -create-xcframework \
 
 # codesign --timestamp -s "F0A925011E7DC575135F176353DD1D4038235587" xcframeworks/Rudder.xcframework
 
-# zip xcframeworks.zip xcframeworks/
+# zip -r xcframeworks.zip xcframeworks/
 # shasum -a 256 xcframeworks.zip >xcframeworks.zip.sha256
 # find . -type f -exec shasum -a 256 {} \; > xcframework.sha256
 
