@@ -1,42 +1,87 @@
-#!/bin/bash -e
-
-declare -a platforms=("iOS" "iOS Simulator" "watchOS" "watchOS Simulator" "tvOS" "tvOS Simulator")
-declare -a schemes=("Rudder_iOS" "Rudder_iOS" "Rudder_watchOS" "Rudder_watchOS" "Rudder_tvOS" "Rudder_tvOS")
-
-# Clean directories
+# !/bin/bash -e
 rm -rf archives/
 rm -rf xcframeworks
 
-# Archive for each platform
-for ((i = 0; i < ${#platforms[@]}; i++)); do
-    platform="${platforms[i]}"
-    scheme="${schemes[i]}"
+xcodebuild archive \
+    -workspace Rudder.xcworkspace \
+    -scheme Rudder_iOS \
+    -destination "generic/platform=iOS" \
+    -archivePath "archives/Rudder-iOS" \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO
 
-    archive_path="archives/Rudder-${platform// /-}"
+xcodebuild archive \
+    -workspace Rudder.xcworkspace \
+    -scheme Rudder_iOS \
+    -destination "generic/platform=iOS Simulator" \
+    -archivePath "archives/Rudder-iOS-simulator" \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO
 
-    xcodebuild archive \
-        -workspace Rudder.xcworkspace \
-        -scheme "${scheme}" \
-        -destination "generic/platform=${platform}" \
-        -archivePath "${archive_path}" \
-        BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
-        SKIP_INSTALL=NO |
-        xcpretty
+xcodebuild archive \
+    -workspace Rudder.xcworkspace \
+    -scheme Rudder_watchOS \
+    -destination "generic/platform=watchOS" \
+    -archivePath "archives/Rudder-watchOS" \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO
 
-    # Check if the archive was successful
-    if [ $? -ne 0 ]; then
-        echo "Error: Archive failed for ${platform}. Exiting."
-        exit 1
-    fi
-done
+xcodebuild archive \
+    -workspace Rudder.xcworkspace \
+    -scheme Rudder_watchOS \
+    -destination "generic/platform=watchOS Simulator" \
+    -archivePath "archives/Rudder-watchOS-simulator" \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO
 
-# Create xcframework for each platform
-for platform in "${platforms[@]}"; do
-    framework_name="Rudder.framework"
-    archive_path="archives/Rudder-${platform// /-}.xcarchive"
+xcodebuild archive \
+    -workspace Rudder.xcworkspace \
+    -scheme Rudder_tvOS \
+    -destination "generic/platform=tvOS" \
+    -archivePath "archives/Rudder-tvOS" \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO
 
-    xcodebuild -create-xcframework \
-        -archive "${archive_path}" -framework "${framework_name}" \
-        -output "xcframeworks/Rudder-${platform// /-}.xcframework" |
-        xcpretty
-done
+xcodebuild archive \
+    -workspace Rudder.xcworkspace \
+    -scheme Rudder_tvOS \
+    -destination "generic/platform=tvOS Simulator" \
+    -archivePath "archives/Rudder-tvOS-simulator" \
+    BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+    SKIP_INSTALL=NO
+
+xcodebuild -create-xcframework \
+    -archive archives/Rudder-iOS.xcarchive -framework Rudder.framework \
+    -archive archives/Rudder-iOS-simulator.xcarchive -framework Rudder.framework \
+    -archive archives/Rudder-watchOS.xcarchive -framework Rudder.framework \
+    -archive archives/Rudder-watchOS-simulator.xcarchive -framework Rudder.framework \
+    -archive archives/Rudder-tvOS.xcarchive -framework Rudder.framework \
+    -archive archives/Rudder-tvOS-simulator.xcarchive -framework Rudder.framework \
+    -output xcframeworks/Rudder.xcframework
+
+xcodebuild -create-xcframework \
+    -archive archives/Rudder-iOS.xcarchive -framework RudderKit.framework \
+    -archive archives/Rudder-iOS-simulator.xcarchive -framework RudderKit.framework \
+    -archive archives/Rudder-watchOS.xcarchive -framework RudderKit.framework \
+    -archive archives/Rudder-watchOS-simulator.xcarchive -framework RudderKit.framework \
+    -archive archives/Rudder-tvOS.xcarchive -framework RudderKit.framework \
+    -archive archives/Rudder-tvOS-simulator.xcarchive -framework RudderKit.framework \
+    -output xcframeworks/RudderKit.xcframework
+
+xcodebuild -create-xcframework \
+    -archive archives/Rudder-iOS.xcarchive -framework RSCrashReporter.framework \
+    -archive archives/Rudder-iOS-simulator.xcarchive -framework RSCrashReporter.framework \
+    -archive archives/Rudder-watchOS.xcarchive -framework RSCrashReporter.framework \
+    -archive archives/Rudder-watchOS-simulator.xcarchive -framework RSCrashReporter.framework \
+    -archive archives/Rudder-tvOS.xcarchive -framework RSCrashReporter.framework \
+    -archive archives/Rudder-tvOS-simulator.xcarchive -framework RSCrashReporter.framework \
+    -output xcframeworks/RSCrashReporter.xcframework
+
+xcodebuild -create-xcframework \
+    -archive archives/Rudder-iOS.xcarchive -framework MetricsReporter.framework \
+    -archive archives/Rudder-iOS-simulator.xcarchive -framework MetricsReporter.framework \
+    -archive archives/Rudder-watchOS.xcarchive -framework MetricsReporter.framework \
+    -archive archives/Rudder-watchOS-simulator.xcarchive -framework MetricsReporter.framework \
+    -archive archives/Rudder-tvOS.xcarchive -framework MetricsReporter.framework \
+    -archive archives/Rudder-tvOS-simulator.xcarchive -framework MetricsReporter.framework \
+    -output xcframeworks/MetricsReporter.xcframework
