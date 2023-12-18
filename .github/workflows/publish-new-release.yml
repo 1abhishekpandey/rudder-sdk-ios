@@ -52,6 +52,11 @@ jobs:
       #   run: |
       #     sh ./generate-xcframework.sh
 
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          release-type: node
+
       - name: Upload Release Artifact
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
