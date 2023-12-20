@@ -39,6 +39,15 @@ jobs:
       #     git config user.name "GitHub actions"
       #     git config user.email noreply@github.com
 
+      # - name: Create Github Release
+      #   id: create_release
+      #   env:
+      #     HUSKY: 0
+      #     GITHUB_TOKEN: ${{ secrets.PAT }}
+      #     CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.PAT }}
+      #   run: |
+      #     DEBUG=conventional-github-releaser npx conventional-github-releaser -p angular --config github-release.config.js
+
       - name: Install xcpretty
         run: gem install xcpretty
 
@@ -52,27 +61,18 @@ jobs:
         run: |
           sh ./generate-xcframework.sh
 
-      # - name: Create Github Release
-      #   id: create_release
-      #   env:
-      #     HUSKY: 0
-      #     GITHUB_TOKEN: ${{ secrets.PAT }}
-      #     CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.PAT }}
-      #   run: |
-      #     DEBUG=conventional-github-releaser npx conventional-github-releaser -p angular --config github-release.config.js
-
       - name: Create A Dummy Git Release
         run: |
-          gh release create v1.2.11 --notes "bugfix release"\
+          gh release create v1.2.13 --notes "bugfix release"\
         env:
           GH_TOKEN: ${{ github.token }}
 
       - name: Upload Release Artifact
         run: |
-          zip -r xcframeworks.zip xcframeworks
-          shasum -a 256 xcframeworks.zip >xcframeworks.sha256
-          gh release upload v1.2.11 xcframeworks.zip
-          gh release upload v1.2.11 xcframeworks.sha256
+          zip -r RudderStack-xcframeworks.zip xcframeworks
+          shasum -a 256 RudderStack-xcframeworks.zip >RudderStack-xcframeworks.sha256
+          gh release upload v1.2.13 RudderStack-xcframeworks.zip
+          gh release upload v1.2.13 RudderStack-xcframeworks.sha256
         env:
           GH_TOKEN: ${{ github.token }}
 
