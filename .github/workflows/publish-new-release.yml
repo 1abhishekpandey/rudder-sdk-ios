@@ -69,10 +69,10 @@ jobs:
 
       - name: Upload Release Artifact
         run: |
-          zip -r RudderStack-xcframeworks.zip xcframeworks
-          shasum -a 256 RudderStack-xcframeworks.zip >RudderStack-xcframeworks.sha256
-          gh release upload v1.2.13 RudderStack-xcframeworks.zip
-          gh release upload v1.2.13 RudderStack-xcframeworks.sha256
+          zip -r Rudder-xcframeworks.zip xcframeworks
+          shasum -a 256 Rudder-xcframeworks.zip >Rudder-xcframeworks.sha256
+          gh release upload v1.2.13 Rudder-xcframeworks.zip
+          gh release upload v1.2.13 Rudder-xcframeworks.sha256
         env:
           GH_TOKEN: ${{ github.token }}
 
