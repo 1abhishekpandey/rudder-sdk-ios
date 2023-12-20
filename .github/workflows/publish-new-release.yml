@@ -59,11 +59,11 @@ jobs:
 
       - name: Generate XCFramework
         run: |
-          sh ./generate-xcframework.sh
+          sh ./scripts/generate-xcframework.sh
 
       - name: Create A Dummy Git Release
         run: |
-          gh release create v1.2.14 --notes "bugfix release"\
+          gh release create v1.2.15 --notes "bugfix release"\
         env:
           GH_TOKEN: ${{ github.token }}
 
@@ -71,8 +71,8 @@ jobs:
         run: |
           zip -r Rudder-xcframeworks.zip xcframeworks
           shasum -a 256 Rudder-xcframeworks.zip >Rudder-xcframeworks.sha256
-          gh release upload v1.2.14 Rudder-xcframeworks.zip
-          gh release upload v1.2.14 Rudder-xcframeworks.sha256
+          gh release upload v1.2.15 Rudder-xcframeworks.zip
+          gh release upload v1.2.15 Rudder-xcframeworks.sha256
         env:
           GH_TOKEN: ${{ github.token }}
 
