@@ -63,18 +63,18 @@ jobs:
 
       - name: Create A Dummy Git Release
         run: |
-          gh release create v1.2.15 --notes "bugfix release"\
+          gh release create v1.2.16 --notes "bugfix release"\
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Artifact
         run: |
           zip -r Rudder-xcframeworks.zip xcframeworks
           shasum -a 256 Rudder-xcframeworks.zip >Rudder-xcframeworks.sha256
-          gh release upload v1.2.15 Rudder-xcframeworks.zip
-          gh release upload v1.2.15 Rudder-xcframeworks.sha256
+          gh release upload v1.2.16 Rudder-xcframeworks.zip
+          gh release upload v1.2.16 Rudder-xcframeworks.sha256
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # - name: Create pull request into develop
   #   uses: repo-sync/pull-request@v2
