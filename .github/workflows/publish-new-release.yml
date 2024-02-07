@@ -50,7 +50,7 @@ jobs:
         run: |
           gh release create v${{ steps.extract-version.outputs.release_version }} --notes "bugfix release"\
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Create pull request into develop
         uses: repo-sync/pull-request@v2
@@ -68,7 +68,7 @@ jobs:
         with:
           branches: "hotfix-release/*"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
       - name: Delete release branch
         uses: koj-co/delete-merged-action@master
@@ -76,7 +76,7 @@ jobs:
         with:
           branches: "release/*"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
 
   xcframQework:
     name: Generate XCFramework
