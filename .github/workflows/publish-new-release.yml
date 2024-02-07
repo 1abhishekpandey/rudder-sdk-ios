@@ -89,7 +89,8 @@ jobs:
           VERSION=1.2.18
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "VERSION: $VERSION"
-          VERSION=v${{ needs.steps.extract-version.outputs.release_version }}
+          echo "Version from release job: ${{ needs.release.outputs.release_version }}"
+          VERSION="v${{ needs.steps.extract-version.outputs.release_version }}"
           echo "VERSION2: $VERSION"
 
       # - name: Checkout source branch
