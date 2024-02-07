@@ -46,11 +46,11 @@ jobs:
       #   run: |
       #     DEBUG=conventional-github-releaser npx conventional-github-releaser -p angular --config github-release.config.js
 
-      - name: Create A Dummy Git Release
-        run: |
-          gh release create v${{ steps.extract-version.outputs.release_version }} --notes "bugfix release"\
-        env:
-          GH_TOKEN: ${{ secrets.PAT }}
+      # - name: Create A Dummy Git Release
+      #   run: |
+      #     gh release create v${{ steps.extract-version.outputs.release_version }} --notes "bugfix release"\
+      #   env:
+      #     GH_TOKEN: ${{ secrets.PAT }}
 
       # - name: Create pull request into develop
       #   uses: repo-sync/pull-request@v2
@@ -89,7 +89,7 @@ jobs:
           VERSION=1.2.18
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "VERSION: $VERSION"
-          VERSION=v${{ needs.release.outputs.release_version }}
+          VERSION=v${{ needs.steps.extract-version.outputs.release_version }}
           echo "VERSION2: $VERSION"
 
       # - name: Checkout source branch
