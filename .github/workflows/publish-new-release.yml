@@ -75,7 +75,7 @@ jobs:
         with:
           branches: "release/*"
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
 
   xcframework:
     name: Generate XCFramework
@@ -89,10 +89,6 @@ jobs:
           VERSION=${BRANCH_NAME#hotfix-}
           VERSION=${VERSION#release/}
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
-        # run: |
-        #   VERSION=1.2.18
-        #   echo "release_version=$VERSION" >> $GITHUB_OUTPUT
-        #   echo "VERSION: $VERSION"
 
       - name: Checkout source branch
         uses: actions/checkout@v4
