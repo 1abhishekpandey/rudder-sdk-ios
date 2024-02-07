@@ -90,29 +90,29 @@ jobs:
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "VERSION: $VERSION"
 
-      # - name: Checkout source branch
-      #   uses: actions/checkout@v4
-      #   with:
-      #     fetch-depth: 0
+      - name: Checkout source branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # - name: Install xcpretty
-      #   run: gem install xcpretty
+      - name: Install xcpretty
+        run: gem install xcpretty
 
-      # - name: Install Cocoapods
-      #   run: gem install cocoapods
+      - name: Install Cocoapods
+        run: gem install cocoapods
 
-      # - name: Pod install
-      #   run: pod install --repo-update
+      - name: Pod install
+        run: pod install --repo-update
 
-      # - name: Generate XCFramework
-      #   run: |
-      #     sh ./scripts/generate-xcframework.sh
+      - name: Generate XCFramework
+        run: |
+          sh ./scripts/generate-xcframework.sh
 
-      # - name: Upload Release Artifact
-      #   run: |
-      #     zip -r Rudder-xcframeworks.zip xcframeworks
-      #     shasum -a 256 Rudder-xcframeworks.zip >Rudder-xcframeworks.sha256
-      #     gh release upload v${{ steps.extract-version.outputs.release_version }} Rudder-xcframeworks.zip
-      #     gh release upload v${{ steps.extract-version.outputs.release_version }} Rudder-xcframeworks.sha256
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release Artifact
+        run: |
+          zip -r Rudder-xcframeworks.zip xcframeworks
+          shasum -a 256 Rudder-xcframeworks.zip >Rudder-xcframeworks.sha256
+          gh release upload v${{ steps.extract-version.outputs.release_version }} Rudder-xcframeworks.zip
+          gh release upload v${{ steps.extract-version.outputs.release_version }} Rudder-xcframeworks.sha256
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
