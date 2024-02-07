@@ -9,10 +9,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  release:
-    name: Publish new release
+  xcframework:
+    name: Generate XCFramework
     runs-on: macos-latest
-    # if: (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix-release/')) && github.event.pull_request.merged == true # only merged pull requests must trigger this job
     steps:
       # - name: Extract version from branch name (for release branches)
       #   id: extract-version
@@ -26,27 +25,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      # - name: Set Node 16
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 16
-
-      # In order to make a commit, we need to initialize a user.
-      # You may choose to write something less generic here if you want, it doesn't matter functionality wise.
-      # - name: Initialize mandatory git config
-      #   run: |
-      #     git config user.name "GitHub actions"
-      #     git config user.email noreply@github.com
-
-      # - name: Create Github Release
-      #   id: create_release
-      #   env:
-      #     HUSKY: 0
-      #     GITHUB_TOKEN: ${{ secrets.PAT }}
-      #     CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.PAT }}
-      #   run: |
-      #     DEBUG=conventional-github-releaser npx conventional-github-releaser -p angular --config github-release.config.js
 
       - name: Install xcpretty
         run: gem install xcpretty
@@ -63,7 +41,7 @@ jobs:
 
       - name: Create A Dummy Git Release
         run: |
-          gh release create v1.2.16 --notes "bugfix release"\
+          gh release create v1.2.17 --notes "bugfix release"\
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -71,33 +49,99 @@ jobs:
         run: |
           zip -r Rudder-xcframeworks.zip xcframeworks
           shasum -a 256 Rudder-xcframeworks.zip >Rudder-xcframeworks.sha256
-          gh release upload v1.2.16 Rudder-xcframeworks.zip
-          gh release upload v1.2.16 Rudder-xcframeworks.sha256
+          gh release upload v1.2.17 Rudder-xcframeworks.zip
+          gh release upload v1.2.17 Rudder-xcframeworks.sha256
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # release:
+  #   name: Publish new release
+  #   runs-on: macos-latest
+  #   # if: (startsWith(github.event.pull_request.head.ref, 'release/') || startsWith(github.event.pull_request.head.ref, 'hotfix-release/')) && github.event.pull_request.merged == true # only merged pull requests must trigger this job
+  #   steps:
+  #     # - name: Extract version from branch name (for release branches)
+  #     #   id: extract-version
+  #     #   run: |
+  #     #     BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+  #     #     VERSION=${BRANCH_NAME#hotfix-}
+  #     #     VERSION=${VERSION#release/}
+  #     #     echo "release_version=$VERSION" >> $GITHUB_OUTPUT
 
-  # - name: Create pull request into develop
-  #   uses: repo-sync/pull-request@v2
-  #   with:
-  #     source_branch: "master"
-  #     destination_branch: "develop"
-  #     github_token: ${{ secrets.PAT }}
-  #     pr_title: "chore(release): pulling master into develop post release v${{ steps.extract-version.outputs.release_version }}"
-  #     pr_body: ":crown: *An automated PR*"
-  #     pr_reviewer: "pallabmaiti"
+  #     # - name: Checkout source branch
+  #     #   uses: actions/checkout@v4
+  #     #   with:
+  #     #     fetch-depth: 0
 
-  # - name: Delete hotfix release branch
-  #   uses: koj-co/delete-merged-action@master
-  #   if: startsWith(github.event.pull_request.head.ref, 'hotfix-release/')
-  #   with:
-  #     branches: "hotfix-release/*"
-  #   env:
-  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     # - name: Set Node 16
+  #     #   uses: actions/setup-node@v3
+  #     #   with:
+  #     #     node-version: 16
 
-  # - name: Delete release branch
-  #   uses: koj-co/delete-merged-action@master
-  #   if: startsWith(github.event.pull_request.head.ref, 'release/')
-  #   with:
-  #     branches: "release/*"
-  #   env:
-  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     # In order to make a commit, we need to initialize a user.
+  #     # You may choose to write something less generic here if you want, it doesn't matter functionality wise.
+  #     # - name: Initialize mandatory git config
+  #     #   run: |
+  #     #     git config user.name "GitHub actions"
+  #     #     git config user.email noreply@github.com
+
+  #     # - name: Create Github Release
+  #     #   id: create_release
+  #     #   env:
+  #     #     HUSKY: 0
+  #     #     GITHUB_TOKEN: ${{ secrets.PAT }}
+  #     #     CONVENTIONAL_GITHUB_RELEASER_TOKEN: ${{ secrets.PAT }}
+  #     #   run: |
+  #     #     DEBUG=conventional-github-releaser npx conventional-github-releaser -p angular --config github-release.config.js
+
+  #     - name: Install xcpretty
+  #       run: gem install xcpretty
+
+  #     - name: Install Cocoapods
+  #       run: gem install cocoapods
+
+  #     - name: Pod install
+  #       run: pod install --repo-update
+
+  #     - name: Generate XCFramework
+  #       run: |
+  #         sh ./scripts/generate-xcframework.sh
+
+  #     - name: Create A Dummy Git Release
+  #       run: |
+  #         gh release create v1.2.16 --notes "bugfix release"\
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  #     - name: Upload Release Artifact
+  #       run: |
+  #         zip -r Rudder-xcframeworks.zip xcframeworks
+  #         shasum -a 256 Rudder-xcframeworks.zip >Rudder-xcframeworks.sha256
+  #         gh release upload v1.2.16 Rudder-xcframeworks.zip
+  #         gh release upload v1.2.16 Rudder-xcframeworks.sha256
+  #       env:
+  #         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # # - name: Create pull request into develop
+  # #   uses: repo-sync/pull-request@v2
+  # #   with:
+  # #     source_branch: "master"
+  # #     destination_branch: "develop"
+  # #     github_token: ${{ secrets.PAT }}
+  # #     pr_title: "chore(release): pulling master into develop post release v${{ steps.extract-version.outputs.release_version }}"
+  # #     pr_body: ":crown: *An automated PR*"
+  # #     pr_reviewer: "pallabmaiti"
+
+  # # - name: Delete hotfix release branch
+  # #   uses: koj-co/delete-merged-action@master
+  # #   if: startsWith(github.event.pull_request.head.ref, 'hotfix-release/')
+  # #   with:
+  # #     branches: "hotfix-release/*"
+  # #   env:
+  # #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # # - name: Delete release branch
+  # #   uses: koj-co/delete-merged-action@master
+  # #   if: startsWith(github.event.pull_request.head.ref, 'release/')
+  # #   with:
+  # #     branches: "release/*"
+  # #   env:
+  # #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
