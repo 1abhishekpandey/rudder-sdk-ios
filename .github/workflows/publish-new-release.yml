@@ -17,8 +17,13 @@ jobs:
       - name: Extract version from branch name (for release branches)
         id: extract-version
         run: |
-          VERSION=1.2.18
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#hotfix-}
+          VERSION=${VERSION#release/}
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
+        # run: |
+        #   VERSION=1.2.18
+        #   echo "release_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Checkout source branch
         uses: actions/checkout@v4
@@ -86,9 +91,14 @@ jobs:
       - name: Extract version from branch name (for release branches)
         id: extract-version
         run: |
-          VERSION=1.2.18
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          VERSION=${BRANCH_NAME#hotfix-}
+          VERSION=${VERSION#release/}
           echo "release_version=$VERSION" >> $GITHUB_OUTPUT
-          echo "VERSION: $VERSION"
+        # run: |
+        #   VERSION=1.2.18
+        #   echo "release_version=$VERSION" >> $GITHUB_OUTPUT
+        #   echo "VERSION: $VERSION"
 
       - name: Checkout source branch
         uses: actions/checkout@v4
