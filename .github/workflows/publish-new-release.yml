@@ -86,11 +86,11 @@ jobs:
       - name: Extract version from branch name (for release branches)
         id: extract-version
         run: |
-          # VERSION=1.2.18
-          # echo "release_version=$VERSION" >> $GITHUB_OUTPUT
-          # echo "VERSION: $VERSION"
-          VERSION=v${{ steps.release.extract-version.outputs.release_version }}
+          VERSION=1.2.18
+          echo "release_version=$VERSION" >> $GITHUB_OUTPUT
           echo "VERSION: $VERSION"
+          VERSION=v${{ steps.release.extract-version.outputs.release_version }}
+          echo "VERSION2: $VERSION"
 
       # - name: Checkout source branch
       #   uses: actions/checkout@v4
